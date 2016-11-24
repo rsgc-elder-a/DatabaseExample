@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
+   
+    //MARK: Properties
     
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
@@ -21,6 +23,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        //handle the text field for name....its user imput will be dealt with through callback to methods below
+        name.delegate = self
         
         // Identify the app's Documents directory and build a path to "contacts.db"
         let fileManager = FileManager.default
@@ -63,7 +67,7 @@ class ViewController: UIViewController {
         
     }
     
-    
+    //MARK: Actions
     @IBAction func saveData(_ sender: Any) {
         
         // Establish path to database through FMDatabase wrapper
@@ -185,6 +189,19 @@ class ViewController: UIViewController {
         }
         
     }
+    
+    
+    //MARK: UITextFieldDelegate
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print(name.text)
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print(name.text)
+    }
+    
+    
+    
+    
     
 }
 
