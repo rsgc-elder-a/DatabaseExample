@@ -8,14 +8,31 @@
 
 import UIKit
 
+struct Contact {
+    var name : String
+    var address: String
+    var phone: String
+    init(name: String, address: String, phone: String){
+        self.name = name
+        self.address = address
+        self.phone = phone
+    }
+}
+
+
+
 class ViewController: UIViewController, UITextFieldDelegate {
-   
+    
     //MARK: Properties
     
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
     @IBOutlet weak var phone: UITextField!
     @IBOutlet weak var status: UILabel!
+    @IBOutlet weak var searchField: UITextField!
+    
+    
+    
     
     // Will save path to database file
     var databasePath = NSString()
@@ -119,6 +136,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
+    //EMPTY CIRCLE PROBLEM!!
     
     @IBAction func findContact(_ sender: Any) {
         
@@ -136,7 +154,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 // Create SQL statement to find data
-                let SQL = "SELECT address, phone FROM CONTACTS WHERE name = '\(nameValue)'"
+                let SQL = "SELECT name, address, phone FROM CONTACTS WHERE name LIKE = '%\(nameValue)%'"
                 
                 // Run query
                 do {
@@ -148,6 +166,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     // Now, open the database and select data using value given for name in the view (user interface)
                     if results?.next() == true {    // Something was found for this query
                         
+                        guard let nameValue : String = results?.string(forColumn: "name") else {
+                            print("Nil value rerunted from adress thats odd ")
+                            return
+                        }
+                        
                         guard let addressValue : String = results?.string(forColumn: "address") else {
                             print("Nil value returned from query for the address, that's odd.")
                             return
@@ -158,6 +181,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         }
                         
                         // Load the results in the view (user interface)
+                        name.text = nameValue
                         address.text = addressValue
                         phone.text = phoneValue
                         status.text = "Record found!"
@@ -191,6 +215,29 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     
+    @IBAction func startEdit(_ sender: Any) {
+        if let searchVal : String = searchField.text {
+        print(searchVal)
+        }
+    }
+    
+    @IBAction func scrollLeft(_ sender: UIButton) {
+        
+    }
+    
+    @IBAction func scrollRight(_ sender: UIButton) {
+        
+    }
+    
+    
+    @IBAction func searchField(_ sender: Any) {
+        
+        if let searchResult = searchField.text {
+            print(searchResult)
+            
+        }
+        
+    }
     //MARK: UITextFieldDelegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print(name.text)
@@ -204,4 +251,5 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     
 }
+
 
