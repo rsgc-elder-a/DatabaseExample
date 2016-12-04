@@ -189,6 +189,7 @@
                     </view>
                     <connections>
                         <outlet property="address" destination="SQa-L3-FPF" id="QLh-fA-2ME"/>
+                        <outlet property="buttonNext" destination="aNs-j6-4uT" id="Epq-39-UqL"/>
                         <outlet property="name" destination="4kF-3u-6Pu" id="Jar-DQ-ala"/>
                         <outlet property="phone" destination="oIZ-Ee-h92" id="6Ta-u8-VjP"/>
                         <outlet property="searchField" destination="05U-pj-Wms" id="M6z-wv-55G"/>

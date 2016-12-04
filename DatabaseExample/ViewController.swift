@@ -31,8 +31,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var searchField: UITextField!
     
+    @IBOutlet weak var buttonNext: UIButton!
+    
+    // Object to store reference to DB
+    var contactDB : FMDatabase?
     
     
+    // Object to store results retreived from DB
+    var results : FMResultSet?
     
     // Will save path to database file
     var databasePath = NSString()
@@ -148,13 +154,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
             if contactDB.open() {
                 
                 // Get form field value
-                guard let nameValue : String = name.text else {
+                guard let searchString : String = searchField.text else {
                     status.text = "Please provide a name."
                     return
                 }
                 
                 // Create SQL statement to find data
-                let SQL = "SELECT name, address, phone FROM CONTACTS WHERE name LIKE = '%\(nameValue)%'"
+                let SQL = "SELECT name, address, phone FROM CONTACTS WHERE name LIKE '%\(searchString)%' OR address LIKE '%\(searchString)%' OR phone LIKE '%\(searchString)%'"
                 
                 // Run query
                 do {
@@ -217,16 +223,94 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func startEdit(_ sender: Any) {
         if let searchVal : String = searchField.text {
-        print(searchVal)
+            print(searchVal)
+            
+            
+        }
+        
+        // Invoke the findContact method.
+        if let searchString = searchField.text {
+            if searchString == "" {
+                resetFields()
+                status.text = ""
+                // buttonNext.isEnabled = false
+                // buttonPrior.isEnabled = false
+            } else {
+                findContact(sender)
+            }
         }
     }
     
+    func resetFields() {
+        name.text = ""
+        address.text = ""
+        phone.text = ""
+    }
+    
+    
     @IBAction func scrollLeft(_ sender: UIButton) {
+        print("back")
         
     }
     
     @IBAction func scrollRight(_ sender: UIButton) {
+        print("foward")
         
+           displayResult()
+        
+    }
+    
+    func displayResult() {
+        
+        if results?.hasAnotherRow() == true {
+            
+            guard let nameValue : String = results?.string(forColumn: "name") else {
+                print("Nil value returned from query for the address, that's odd.")
+                return
+            }
+            guard let addressValue : String = results?.string(forColumn: "address") else {
+                print("Nil value returned from query for the address, that's odd.")
+                return
+            }
+            guard let phoneValue : String = results?.string(forColumn: "phone") else {
+                print("Nil value returned from query for the phone number, that's odd.")
+                return
+            }
+            
+            // Load the results in the view (user interface)
+            name.text = nameValue
+            address.text = addressValue
+            phone.text = phoneValue
+            status.text = "Record found!"
+            
+            // Enable the next result button if there is another result
+            if results?.next() == true {
+                if results?.hasAnotherRow() == true {
+                    buttonNext.isEnabled = true
+                }
+            } else {
+                buttonNext.isEnabled = false
+                
+                // Close the database
+                if contactDB?.close() == true {
+                    print("DB closed")
+                }
+                
+            }
+            
+        }
+        /*Add a fumcton for when the prior
+         make sure to check if there is a prior result
+         then if there is go back to prevois result
+         
+         Make a stuct to hold reuslts
+         struct Contact {
+         */
+        
+        print("Another row?")
+        print(results?.hasAnotherRow())
+        print("contents of next row")
+        print(results?.resultDictionary())
     }
     
     
