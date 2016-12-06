@@ -166,7 +166,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 do {
                     
                     // Try to run the query
-                    let results : FMResultSet? = try contactDB.executeQuery(SQL, values: nil)
+                     results = try contactDB.executeQuery(SQL, values: nil)
                     
                     // We know database should exist now (since viewDidLoad runs at startup)
                     // Now, open the database and select data using value given for name in the view (user interface)
@@ -224,8 +224,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func startEdit(_ sender: Any) {
         if let searchVal : String = searchField.text {
             print(searchVal)
-            
-            
+
         }
         
         // Invoke the findContact method.
@@ -250,9 +249,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func scrollLeft(_ sender: UIButton) {
         print("back")
-        
+        //e
     }
-    
     @IBAction func scrollRight(_ sender: UIButton) {
         print("foward")
         
@@ -329,10 +327,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         print(name.text)
     }
-    
-    
-    
-    
     
 }
 
