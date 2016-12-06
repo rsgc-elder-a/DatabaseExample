@@ -232,7 +232,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             if searchString == "" {
                 resetFields()
                 status.text = ""
-                // buttonNext.isEnabled = false
+                 buttonNext.isEnabled = true
                 // buttonPrior.isEnabled = false
             } else {
                 findContact(sender)
