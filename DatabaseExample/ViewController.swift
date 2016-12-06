@@ -142,7 +142,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
-    //EMPTY CIRCLE PROBLEM!!
+   
     
     @IBAction func findContact(_ sender: Any) {
         
@@ -201,7 +201,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     }
                     
                     // Close the database
-                    contactDB.close()
+                    //contactDB.close()
                     
                 } catch {
                     
@@ -265,7 +265,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if results?.hasAnotherRow() == true {
             
             guard let nameValue : String = results?.string(forColumn: "name") else {
-                print("Nil value returned from query for the address, that's odd.")
+                print("Nil value returned from query for the address, that's odd.") //
                 return
             }
             guard let addressValue : String = results?.string(forColumn: "address") else {
