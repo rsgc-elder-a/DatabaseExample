@@ -19,6 +19,8 @@ struct Contact {
     }
 }
 
+var count: Int = 0
+
 
 
 class ViewController: UIViewController, UITextFieldDelegate {
@@ -33,6 +35,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var buttonNext: UIButton!
     
+    
     // Object to store reference to DB
     var contactDB : FMDatabase?
     
@@ -42,6 +45,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // Will save path to database file
     var databasePath = NSString()
+    
+    // create a empty array of type Contact
+    var resultArray: [Contact] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +148,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
     }
-   
+    
     
     @IBAction func findContact(_ sender: Any) {
         
@@ -166,7 +172,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 do {
                     
                     // Try to run the query
-                     results = try contactDB.executeQuery(SQL, values: nil)
+                    results = try contactDB.executeQuery(SQL, values: nil)
                     
                     // We know database should exist now (since viewDidLoad runs at startup)
                     // Now, open the database and select data using value given for name in the view (user interface)
@@ -224,7 +230,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func startEdit(_ sender: Any) {
         if let searchVal : String = searchField.text {
             print(searchVal)
-
+            
         }
         
         // Invoke the findContact method.
@@ -232,7 +238,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             if searchString == "" {
                 resetFields()
                 status.text = ""
-                 buttonNext.isEnabled = true
+                buttonNext.isEnabled = true
                 // buttonPrior.isEnabled = false
             } else {
                 findContact(sender)
@@ -249,14 +255,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func scrollLeft(_ sender: UIButton) {
         print("back")
-        //e
+        backDisplay()
     }
     @IBAction func scrollRight(_ sender: UIButton) {
         print("foward")
+        displayResult()
+    }
+    
+    
+    func backDisplay() {
         
-           displayResult()
+        
+        
+        name.text = resultArray[count-1].name
+        address.text = resultArray[count-1].address
+        phone.text = resultArray[count-1].phone
+        
+        //I dont know a way of keeping track
+        //as well here how to acsess with proper syntax
         
     }
+    
     
     func displayResult() {
         
@@ -281,10 +300,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
             phone.text = phoneValue
             status.text = "Record found!"
             
+            
+            //add the values to my array so i can scroll back
+            resultArray.append(Contact(name: nameValue, address: addressValue, phone: phoneValue))
+            
+            //count += 1
+            
+            
+            
             // Enable the next result button if there is another result
             if results?.next() == true {
                 if results?.hasAnotherRow() == true {
                     buttonNext.isEnabled = true
+                    
+                    count += 1
                 }
             } else {
                 buttonNext.isEnabled = false
