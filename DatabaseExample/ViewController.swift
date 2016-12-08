@@ -262,7 +262,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         displayResult()
         
-        if count > fullCount {
+        if count > fullCount-2 {
             
             name.text = resultArray[count].name
             address.text = resultArray[count].address
@@ -274,15 +274,13 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func backDisplay() {
         
-        if count >= 0 {
+        if count >= 2 {
             //  buttonPrevous = true
             
             name.text = resultArray[count-2].name
             address.text = resultArray[count-2].address
             phone.text = resultArray[count-2].phone
         }
-        
-        
         
         //I dont know a way of keeping track
         //as well here how to acsess with proper syntax
@@ -330,7 +328,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     fullCount += 1
                 }
             } else {
-                buttonNext.isEnabled = false
+                //buttonNext.isEnabled = false
                 
                 // Close the database
                 if contactDB?.close() == true {
