@@ -20,7 +20,7 @@ struct Contact {
 }
 
 var count: Int = 0
-
+var fullCount : Int = 0
 
 
 class ViewController: UIViewController, UITextFieldDelegate {
@@ -259,21 +259,35 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     @IBAction func scrollRight(_ sender: UIButton) {
         print("foward")
+        
         displayResult()
+        
+        if count > fullCount {
+            
+            name.text = resultArray[count].name
+            address.text = resultArray[count].address
+            phone.text = resultArray[count].phone
+        }
+        count += 1
     }
     
     
     func backDisplay() {
         
+        if count >= 0 {
+            //  buttonPrevous = true
+            
+            name.text = resultArray[count-2].name
+            address.text = resultArray[count-2].address
+            phone.text = resultArray[count-2].phone
+        }
         
         
-        name.text = resultArray[count-1].name
-        address.text = resultArray[count-1].address
-        phone.text = resultArray[count-1].phone
         
         //I dont know a way of keeping track
         //as well here how to acsess with proper syntax
         
+        count += -1
     }
     
     
@@ -313,7 +327,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 if results?.hasAnotherRow() == true {
                     buttonNext.isEnabled = true
                     
-                    count += 1
+                    fullCount += 1
                 }
             } else {
                 buttonNext.isEnabled = false
